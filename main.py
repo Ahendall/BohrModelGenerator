@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import elements as e
+import math as m
         
 def main():
     # create an array of elements containing the first 20 elements in the periodic table
@@ -30,21 +31,48 @@ def main():
         for i in range(element.period):
             image_draw.ellipse((250 - (50 * (i + 1)), 250 - (50 * (i + 1)), 250 + (50 * (i + 1)), 250 + (50 * (i + 1))), outline=(0, 0, 0))
         
-        # Draw nucleus as purple fill, 35px radius circle
-        image_draw.ellipse((232, 232, 268, 268), fill=(128, 0, 128))
+        # Draw nucleus as red fill, 35px radius circle
+        image_draw.ellipse((232, 232, 268, 268), fill=(200, 0, 0))
         
-        # draw electrons on orbit rings from line 31 with rule of 8 electrons per ring
         for i in range(element.number):
-            # calculate the x and y coordinates of the electron
-            x = 250 + (50 * (i // 8 + 1)) * (1 if i % 2 == 0 else -1)
-            y = 250 + (50 * (i // 8 + 1)) * (1 if i % 4 < 2 else -1)
-            # draw the electron as a green circle
-            image_draw.ellipse((x - 5, y - 5, x + 5, y + 5), fill=(0, 128, 0))            
+            if i < 3:
+                drawElectronsRing1(i, image_draw)
+
+
+
+            
+        
+        
+        
+        # Save the image as a png file with the element name as the file name
+                   
         image.save(f'{element.symbol}.png')
         
         
     
-    
-    
+def drawElectronsRing1(num, imageDraw, imageWidth=500, imageHeight=500):
+    def f(x): return m.sqrt(pow(50, 2) - pow(x, 2))
+
+    x = (imageWidth / 2) - 5
+    y = (
+        f(num) + (imageHeight / 2) - 5 if isEven(num)
+        else (imageHeight / 2) - f(num) - 5
+    )
+
+    imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+
+def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
+    def f(x): return m.sqrt(pow(100, 2) - pow(x, 2))
+    def g(x): return 100 * m.cos((m.pi/2) * x)
+
+    if num <= 3:
+        x = (imageWidth / 2) - 5
+        y = (
+            (imageHeight / 2) + (f(g(num)) * -1) if isEven(num)
+            else f(g(num))
+        )
+
+
+def isEven(num): return num % 2 == 0
 if __name__ == "__main__":
     main()
