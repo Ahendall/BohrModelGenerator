@@ -37,6 +37,12 @@ def main():
             if 2 < i < 11:
                 drawElectronsRing2(i, image_draw)
 
+            if 10 < i < 19:
+                drawElectronsRing3(i, image_draw)
+            
+            if 18 < i < 37:
+                drawElectronsRing4(i, image_draw)
+
         
         image.save(f'{element.symbol}.png')
         
@@ -79,6 +85,84 @@ def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
     if 4 < num <= 8:
         def g(x):
             val = 60 * m.cos(m.pi * x)
+            return val
+
+        if num < 7:            
+            x = (imageWidth/2) + g(num) - 5
+            y = f(g(num)) + (imageHeight/2) - 5
+            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+            return
+        
+        if num > 6:           
+            x = (imageWidth/2) + g(num) - 5
+            y = (f(g(num)) * -1) + (imageHeight/2) - 5
+            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+            return
+
+
+def drawElectronsRing3(num, imageDraw, imageWidth=500, imageHeight=500):
+    num -= 10
+    def f(x):
+            val = (pow(150, 2) - pow(x, 2))
+            return m.sqrt(val)
+
+    if num <= 3:
+        def g(x): return (150 * x) - 300
+
+        x = (imageWidth/2) + g(num) - 5
+        y = f(g(num)) + (imageHeight/2) - 5
+
+        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+        return
+    
+    if num == 4:
+        x = 245
+        y = 95
+        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+        return
+
+    if 4 < num <= 8:
+        def g(x):
+            val = 120 * m.cos(m.pi * x)
+            return val
+
+        if num < 7:            
+            x = (imageWidth/2) + g(num) - 5
+            y = f(g(num)) + (imageHeight/2) - 5
+            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+            return
+        
+        if num > 6:           
+            x = (imageWidth/2) + g(num) - 5
+            y = (f(g(num)) * -1) + (imageHeight/2) - 5
+            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+            return
+
+
+def drawElectronsRing4(num, imageDraw, imageWidth=500, imageHeight=500):
+    num -= 18
+    def f(x):
+            val = (pow(200, 2) - pow(x, 2))
+            return m.sqrt(val)
+
+    if num <= 3:
+        def g(x): return (200 * x) - 400
+
+        x = (imageWidth/2) + g(num) - 5
+        y = f(g(num)) + (imageHeight/2) - 5
+
+        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+        return
+    
+    if num == 4:
+        x = 243
+        y = 45
+        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+        return
+
+    if 4 < num <= 8:
+        def g(x):
+            val = 140 * m.cos(m.pi * x)
             return val
 
         if num < 7:            
