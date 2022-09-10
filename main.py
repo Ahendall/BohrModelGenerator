@@ -56,21 +56,18 @@ def drawElectronsRing1(num, imageDraw, imageWidth=500, imageHeight=500):
 
 def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
     num -= 2
-
-    if num <= 3:
-        def f(x):
+    def f(x):
             val = (pow(100, 2) - pow(x, 2))
             return m.sqrt(val)
+
+    if num <= 3:
         # def g(x): return 100 * m.cos((m.pi/2) * x) <--- Doesn't work
         def g(x): return (100 * x) - 200
-        x = (
-            (imageWidth/2) + g(num) - 5
-        )
-        y = (
-            f(g(num)) + (imageHeight/2) - 5
-        )
+
+        x = (imageWidth/2) + g(num) - 5
+        y = f(g(num)) + (imageHeight/2) - 5
+
         imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        
         return
     
     if num == 4:
@@ -78,6 +75,23 @@ def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
         y = 145
         imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
         return
+
+    if 4 < num <= 8:
+        def g(x):
+            val = 60 * m.cos(m.pi * x)
+            return val
+
+        if num < 7:            
+            x = (imageWidth/2) + g(num) - 5
+            y = f(g(num)) + (imageHeight/2) - 5
+            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+            return
+        
+        if num > 6:           
+            x = (imageWidth/2) + g(num) - 5
+            y = (f(g(num)) * -1) + (imageHeight/2) - 5
+            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+            return
 
 
 def isEven(num): return num % 2 == 0
