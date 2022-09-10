@@ -8,20 +8,36 @@ def main():
     
     # Create bohr model for each element
     for element in elements:
-        # Create a new image with dimensions 500x500 and a white background
-        image = Image.new("RGB", (500, 500), (255, 255, 255))
+        # Create a new image with dimensions 500x550 and a white background
+        image = Image.new("RGB", (500, 550), (255, 255, 255))
+
+        # add black border to the image
+        image_draw = ImageDraw.Draw(image)
+        image_draw.rectangle((0, 0, 500, 550), outline=(0, 0, 0), width=3)
         
         # add the element name to the image
-        font = ImageFont.truetype("arial.ttf", size=40)
-        image_draw = ImageDraw.Draw(image)
-        image_draw.text((10, 445), element.name, (0, 0, 0), font=font)
+        font = ImageFont.truetype("arial.ttf", size=50)
+        image_draw.text((6, 475), element.name, (0, 0, 0), font=font)
+
+        # add atomic number and atomic mass to the top left of image
+        font = ImageFont.truetype("arial.ttf", size=30)
+        image_draw.text((6, 6), f"{element.number}", (0, 0, 0), font=font)
+        image_draw.text((6, 36), f"{element.mass}", (0, 0, 0), font=font)
+
         
-        
+        # add proton, neutron, and electron count
+        font = ImageFont.truetype("arial.ttf", size=15)
+        text = f'Protons: {element.number} | Neutrons: {m.trunc(element.mass - element.number)} | Electrons: {element.number}'
+        image_draw.text((10, 530), text, (0, 0, 0), font=font)
+
         # Add the element symbol to the image
         font = ImageFont.truetype("arial.ttf", size=100)
         image_draw = ImageDraw.Draw(image)
         x_axis = (410 if len(element.symbol) == 1 else 365)
-        image_draw.text((x_axis, 390), element.symbol, (0, 0, 0), font=font)
+        image_draw.text((x_axis, 450), element.symbol, (0, 0, 0), font=font)
+
+        # add box around the element symbol
+        image_draw.rectangle((360, 447, 497, 547), outline=(0, 0, 0))
         
         # Create energy level rings based on element period
         for i in range(element.period):
@@ -57,7 +73,7 @@ def drawElectronsRing1(num, imageDraw, imageWidth=500, imageHeight=500):
         else (imageHeight / 2) - f(num) - 5
     )
 
-    imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+    imageDraw.ellipse((x, y, x + 10, y + 10), fill=(8, 0, 153))
 
 
 def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
@@ -66,21 +82,19 @@ def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
             val = (pow(100, 2) - pow(x, 2))
             return m.sqrt(val)
 
+    # Coord values for electron
+    x = 0
+    y = 0
+
     if num <= 3:
         # def g(x): return 100 * m.cos((m.pi/2) * x) <--- Doesn't work
         def g(x): return (100 * x) - 200
-
         x = (imageWidth/2) + g(num) - 5
         y = f(g(num)) + (imageHeight/2) - 5
-
-        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        return
     
     if num == 4:
         x = 245
         y = 145
-        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        return
 
     if 4 < num <= 8:
         def g(x):
@@ -90,14 +104,12 @@ def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
         if num < 7:            
             x = (imageWidth/2) + g(num) - 5
             y = f(g(num)) + (imageHeight/2) - 5
-            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-            return
         
         if num > 6:           
             x = (imageWidth/2) + g(num) - 5
             y = (f(g(num)) * -1) + (imageHeight/2) - 5
-            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-            return
+
+    return imageDraw.ellipse((x, y, x + 10, y + 10), fill=(5, 74, 189))
 
 
 def drawElectronsRing3(num, imageDraw, imageWidth=500, imageHeight=500):
@@ -106,20 +118,19 @@ def drawElectronsRing3(num, imageDraw, imageWidth=500, imageHeight=500):
             val = (pow(150, 2) - pow(x, 2))
             return m.sqrt(val)
 
+    # Coord values for electron
+    x = 0
+    y = 0
+
     if num <= 3:
         def g(x): return (150 * x) - 300
 
         x = (imageWidth/2) + g(num) - 5
         y = f(g(num)) + (imageHeight/2) - 5
-
-        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        return
     
     if num == 4:
         x = 245
         y = 95
-        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        return
 
     if 4 < num <= 8:
         def g(x):
@@ -129,14 +140,12 @@ def drawElectronsRing3(num, imageDraw, imageWidth=500, imageHeight=500):
         if num < 7:            
             x = (imageWidth/2) + g(num) - 5
             y = f(g(num)) + (imageHeight/2) - 5
-            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-            return
         
         if num > 6:           
             x = (imageWidth/2) + g(num) - 5
             y = (f(g(num)) * -1) + (imageHeight/2) - 5
-            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-            return
+
+    return imageDraw.ellipse((x, y, x + 10, y + 10), fill=(3, 142, 221))
 
 
 def drawElectronsRing4(num, imageDraw, imageWidth=500, imageHeight=500):
@@ -145,20 +154,19 @@ def drawElectronsRing4(num, imageDraw, imageWidth=500, imageHeight=500):
             val = (pow(200, 2) - pow(x, 2))
             return m.sqrt(val)
 
+    # Coord values for electron
+    x = 0
+    y = 0
+
     if num <= 3:
         def g(x): return (200 * x) - 400
 
         x = (imageWidth/2) + g(num) - 5
         y = f(g(num)) + (imageHeight/2) - 5
-
-        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        return
     
     if num == 4:
         x = 243
         y = 45
-        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-        return
 
     if 4 < num <= 8:
         def g(x):
@@ -168,17 +176,17 @@ def drawElectronsRing4(num, imageDraw, imageWidth=500, imageHeight=500):
         if num < 7:            
             x = (imageWidth/2) + g(num) - 5
             y = f(g(num)) + (imageHeight/2) - 5
-            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-            return
         
         if num > 6:           
             x = (imageWidth/2) + g(num) - 5
             y = (f(g(num)) * -1) + (imageHeight/2) - 5
-            imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
-            return
+
+    imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 212, 255))
 
 
-def isEven(num): return num % 2 == 0
+def isEven(num):
+    return num % 2 == 0
+
 
 if __name__ == "__main__":
     main()
