@@ -23,29 +23,21 @@ def main():
         x_axis = (410 if len(element.symbol) == 1 else 365)
         image_draw.text((x_axis, 390), element.symbol, (0, 0, 0), font=font)
         
-        # Create energy level rings based on period with following radius rule:
-        # ring 1: 50px
-        # ring 2: 100px
-        # ring 3: 150px
-        # ring 4: 200px
+        # Create energy level rings based on element period
         for i in range(element.period):
             image_draw.ellipse((250 - (50 * (i + 1)), 250 - (50 * (i + 1)), 250 + (50 * (i + 1)), 250 + (50 * (i + 1))), outline=(0, 0, 0))
         
         # Draw nucleus as red fill, 35px radius circle
         image_draw.ellipse((232, 232, 268, 268), fill=(200, 0, 0))
         
-        for i in range(element.number):
+        for i in range(1, element.number + 1, 1):  
             if i < 3:
                 drawElectronsRing1(i, image_draw)
+                
+            if 2 < i < 11:
+                drawElectronsRing2(i, image_draw)
 
-
-
-            
         
-        
-        
-        # Save the image as a png file with the element name as the file name
-                   
         image.save(f'{element.symbol}.png')
         
         
@@ -61,18 +53,34 @@ def drawElectronsRing1(num, imageDraw, imageWidth=500, imageHeight=500):
 
     imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
 
+
 def drawElectronsRing2(num, imageDraw, imageWidth=500, imageHeight=500):
-    def f(x): return m.sqrt(pow(100, 2) - pow(x, 2))
-    def g(x): return 100 * m.cos((m.pi/2) * x)
+    num -= 2
 
     if num <= 3:
-        x = (imageWidth / 2) - 5
-        y = (
-            (imageHeight / 2) + (f(g(num)) * -1) if isEven(num)
-            else f(g(num))
+        def f(x):
+            val = (pow(100, 2) - pow(x, 2))
+            return m.sqrt(val)
+        # def g(x): return 100 * m.cos((m.pi/2) * x) <--- Doesn't work
+        def g(x): return (100 * x) - 200
+        x = (
+            (imageWidth/2) + g(num) - 5
         )
+        y = (
+            f(g(num)) + (imageHeight/2) - 5
+        )
+        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+        
+        return
+    
+    if num == 4:
+        x = 245
+        y = 145
+        imageDraw.ellipse((x, y, x + 10, y + 10), fill=(0, 128, 128))
+        return
 
 
 def isEven(num): return num % 2 == 0
+
 if __name__ == "__main__":
     main()
